@@ -628,7 +628,7 @@ class FactionCommands {
                 $lowercaseName = strtolower($playerName);
                 $result = $this->plugin->db->query("SELECT * FROM confirm WHERE player='$lowercaseName';");
                 $array = $result->fetchArray(SQLITE3_ASSOC);
-                if (empty($array) == true) {
+                if (!is_array($array) or count($array) === 0) {
                     $sender->sendMessage($this->plugin->formatMessage("You have not been invited to any factions"));
                     return true;
                 }
@@ -659,7 +659,7 @@ class FactionCommands {
                 $lowercaseName = strtolower($playerName);
                 $result = $this->plugin->db->query("SELECT * FROM confirm WHERE player='$lowercaseName';");
                 $array = $result->fetchArray(SQLITE3_ASSOC);
-                if (empty($array) == true) {
+                if (!is_array($array) or count($array) === 0) {
                     $sender->sendMessage($this->plugin->formatMessage("You have not been invited to any factions"));
                     return true;
                 }
@@ -766,7 +766,7 @@ class FactionCommands {
                 $faction = $this->plugin->getPlayerFaction($sender->getName());
                 $result = $this->plugin->db->query("SELECT * FROM home WHERE faction = '$faction';");
                 $array = $result->fetchArray(SQLITE3_ASSOC);
-                if (!empty($array)) {
+                if (is_array($array) and count($array) >= 0) {
                     if ($array['world'] === null || $array['world'] === "") {
                         $sender->sendMessage($this->plugin->formatMessage("Home is missing world name, please delete and make it again"));
                         return true;
@@ -1083,7 +1083,7 @@ class FactionCommands {
                 $lowercaseName = strtolower($playerName);
                 $result = $this->plugin->db->query("SELECT * FROM alliance WHERE player='$lowercaseName';");
                 $array = $result->fetchArray(SQLITE3_ASSOC);
-                if (empty($array) == true) {
+                if (!is_array($array) or count($array) === 0) {
                     $sender->sendMessage($this->plugin->formatMessage("Your faction has not been requested to ally with any factions"));
                     return true;
                 }
@@ -1118,7 +1118,7 @@ class FactionCommands {
                 $lowercaseName = strtolower($playerName);
                 $result = $this->plugin->db->query("SELECT * FROM alliance WHERE player='$lowercaseName';");
                 $array = $result->fetchArray(SQLITE3_ASSOC);
-                if (empty($array) == true) {
+                if (!is_array($array) or count($array) === 0) {
                     $sender->sendMessage($this->plugin->formatMessage("Your faction has not been requested to ally with any factions"));
                     return true;
                 }
@@ -1202,7 +1202,7 @@ class FactionCommands {
                     $result = $this->plugin->db->query("SELECT * FROM motd WHERE faction='$faction';");
                     $array = $result->fetchArray(SQLITE3_ASSOC);
                     $power = $this->plugin->getFactionPower($faction);
-                    $message = $array["message"];
+                    $message = is_array($array) ? $array["message"] : "No description set";
                     $leader = $this->plugin->getLeader($faction);
                     $numPlayers = $this->plugin->getNumberOfPlayers($faction);
                     $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "-------INFORMATION-------" . TextFormat::RESET);
@@ -1221,7 +1221,7 @@ class FactionCommands {
                     $result = $this->plugin->db->query("SELECT * FROM motd WHERE faction='$faction';");
                     $array = $result->fetchArray(SQLITE3_ASSOC);
                     $power = $this->plugin->getFactionPower($faction);
-                    $message = $array["message"];
+                    $message = is_array($array) ? $array["message"] : "No description set";
                     $leader = $this->plugin->getLeader($faction);
                     $numPlayers = $this->plugin->getNumberOfPlayers($faction);
                     $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "-------INFORMATION-------" . TextFormat::RESET);
